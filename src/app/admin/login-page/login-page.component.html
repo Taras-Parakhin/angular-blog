@@ -1,0 +1,56 @@
+<form class="card" [formGroup]="form" (ngSubmit)="submit()">
+  <h2>Go to the admin panel</h2>
+
+  <div class="alert alert-danger" *ngIf="authService.error$ | async as error">
+    {{error}}
+  </div>
+
+  <div class="alert alert-danger" *ngIf="message">
+    {{message}}
+  </div>
+
+  <div class="form-control" [ngClass]="{invalid: form.get('email')!.touched && form.get('email')!.invalid}">
+    <label>
+      Email:
+      <input type="email" formControlName="email">
+    </label>
+
+    <div class="validation" *ngIf="form.get('email')!.touched && form.get('email')!.invalid">
+      <small *ngIf="form.get('email')!.errors?.['required']">
+        email field is required
+      </small>
+
+<!--      <small *ngIf="form.controls?.['email']?.errors?.['required']">-->
+<!--        email field is required-->
+<!--      </small>-->
+
+      <small *ngIf="form.get('email')!.errors?.['email']">
+        email is not valid
+      </small>
+    </div>
+  </div>
+
+  <div class="form-control" [ngClass]="{invalid: form.get('email')!.touched && form.get('email')!.invalid}">
+    <label>
+      Password:
+      <input type="password" formControlName="password">
+    </label>
+
+    <div class="validation" *ngIf="form.get('password')!.touched && form.get('password')!.invalid">
+      <small *ngIf="form.get('password')!.errors?.['required']">
+        password field is required
+      </small>
+
+      <small *ngIf="form.controls['password'].hasError('minlength')">
+        the length of password must be at least
+        {{form.get('password')!.errors?.['minlength']?.['requiredLength']}} characters. Now is {{form.get('password')!.errors?.['minlength']?.['actualLength']}} character<span *ngIf="form.controls['password'].value.length > 1">s</span>
+      </small>
+    </div>
+  </div>
+
+  <button
+    type="submit"
+    class="btn btn-primary"
+    [disabled]="form.invalid || submitted"
+  >Login</button>
+</form>
